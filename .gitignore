@@ -41,3 +41,32 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase
+**/google-services.json
+**/GoogleService-Info.plist
+lib/firebase_options.dart
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Secrets and API keys
+**/secrets.dart
+**/api_keys.dart
+
+# Generated files
+*.g.dart
+*.freezed.dart
+
+# Coverage
+coverage/
+*.lcov
+
+# Test related
+test/.test_coverage.dart
+.test_coverage.dart
+
+# Mercado Pago credentials
+**/mercadopago_credentials.dart
