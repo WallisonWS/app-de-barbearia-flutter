@@ -1,0 +1,62 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isValidImageSize() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB
+    }
+    
+    function isValidImageType() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    // Profile pictures
+    match /profile_pictures/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      isOwner(userId) && 
+                      isValidImageSize() && 
+                      isValidImageType();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Barber business photos
+    match /barber_photos/{barberId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      isOwner(barberId) && 
+                      isValidImageSize() && 
+                      isValidImageType();
+      allow delete: if isOwner(barberId);
+    }
+    
+    // Promotion images
+    match /promotion_images/{barberId}/{promotionId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      isOwner(barberId) && 
+                      isValidImageSize() && 
+                      isValidImageType();
+      allow delete: if isOwner(barberId);
+    }
+    
+    // Service images
+    match /service_images/{barberId}/{serviceId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      isOwner(barberId) && 
+                      isValidImageSize() && 
+                      isValidImageType();
+      allow delete: if isOwner(barberId);
+    }
+  }
+}

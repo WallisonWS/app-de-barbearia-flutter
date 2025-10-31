@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isBarber() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'barber';
+    }
+    
+    function isClient() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'client';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getBarberIdFromUser(userId) {
+      return get(/databases/$(database)/documents/barbers/$(userId)).id;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Barbers collection
+    match /barbers/{barberId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(barberId);
+      allow update: if isOwner(barberId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Clients collection
+    match /clients/{clientId} {
+      allow read: if isAuthenticated() && 
+                     (isOwner(resource.data.userId) || 
+                      isOwner(resource.data.barberId) || 
+                      isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.userId) || 
+                       isOwner(resource.data.barberId) || 
+                       isAdmin();
+      allow delete: if isAdmin() || isOwner(resource.data.barberId);
+    }
+    
+    // Appointments collection
+    match /appointments/{appointmentId} {
+      allow read: if isAuthenticated() && 
+                     (isOwner(resource.data.clientId) || 
+                      isOwner(resource.data.barberId) || 
+                      isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.clientId) || 
+                       isOwner(resource.data.barberId) || 
+                       isAdmin();
+      allow delete: if isAdmin() || 
+                       isOwner(resource.data.clientId) || 
+                       isOwner(resource.data.barberId);
+    }
+    
+    // Services collection
+    match /services/{serviceId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isBarber();
+      allow update: if isOwner(resource.data.barberId) || isAdmin();
+      allow delete: if isOwner(resource.data.barberId) || isAdmin();
+    }
+    
+    // Promotions collection
+    match /promotions/{promotionId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isBarber();
+      allow update: if isOwner(resource.data.barberId) || isAdmin();
+      allow delete: if isOwner(resource.data.barberId) || isAdmin();
+    }
+    
+    // Subscriptions collection
+    match /subscriptions/{subscriptionId} {
+      allow read: if isOwner(resource.data.barberId) || isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Payments collection
+    match /payments/{paymentId} {
+      allow read: if isOwner(resource.data.barberId) || isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Notifications collection
+    match /notifications/{notificationId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+    
+    // Admin settings
+    match /admin_settings/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}
