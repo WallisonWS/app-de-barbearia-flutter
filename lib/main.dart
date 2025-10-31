@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_strings.dart';
+import 'presentation/providers/auth_provider.dart';
+import 'presentation/screens/auth/role_selection_screen.dart';
+import 'presentation/screens/barber/barber_dashboard_screen.dart';
+import 'presentation/screens/client/client_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // TODO: Initialize Firebase
-  // await Firebase.initializeApp();
-  
-  // TODO: Initialize Hive
-  // await Hive.initFlutter();
   
   runApp(const MyApp());
 }
@@ -20,13 +19,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppStrings.appName,
-      debugShowCheckedModeBanner: false,
-      theme: _buildLightTheme(),
-      darkTheme: _buildDarkTheme(),
-      themeMode: ThemeMode.system,
-      home: const SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MaterialApp(
+        title: AppStrings.appName,
+        debugShowCheckedModeBanner: false,
+        theme: _buildLightTheme(),
+        darkTheme: _buildDarkTheme(),
+        themeMode: ThemeMode.system,
+        home: const SplashScreen(),
+      ),
     );
   }
 
@@ -154,17 +158,82 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
   @override
   void initState() {
     super.initState();
+    
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    );
+
+    _controller.forward();
     _initialize();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _initialize() async {
-    // TODO: Check authentication status
-    // TODO: Navigate to appropriate screen
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
+    
+    if (!mounted) return;
+
+    final authProvider = context.read<AuthProvider>();
+    await authProvider.checkAuthStatus();
+
+    if (!mounted) return;
+
+    if (authProvider.isAuthenticated) {
+      final user = authProvider.currentUser!;
+      
+      // Navegar para a tela apropriada baseada no role
+      if (user.role.toString().contains('barber')) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BarberDashboardScreen(),
+          ),
+        );
+      } else if (user.role.toString().contains('client')) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ClientHomeScreen(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RoleSelectionScreen(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RoleSelectionScreen(),
+        ),
+      );
+    }
   }
 
   @override
@@ -175,34 +244,40 @@ class _SplashScreenState extends State<SplashScreen> {
           gradient: AppColors.primaryGradient,
         ),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.content_cut,
-                size: 100,
-                color: AppColors.textWhite,
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.content_cut,
+                    size: 100,
+                    color: AppColors.textWhite,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    AppStrings.appName,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          color: AppColors.textWhite,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    AppStrings.appTagline,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textWhite,
+                        ),
+                  ),
+                  const SizedBox(height: 48),
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.textWhite),
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              Text(
-                AppStrings.appName,
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: AppColors.textWhite,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                AppStrings.appTagline,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textWhite,
-                    ),
-              ),
-              const SizedBox(height: 48),
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.textWhite),
-              ),
-            ],
+            ),
           ),
         ),
       ),
