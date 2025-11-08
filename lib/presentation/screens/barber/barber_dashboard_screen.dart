@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/role_selection_screen.dart';
+import '../profile/profile_screen.dart';
 
 class BarberDashboardScreen extends StatelessWidget {
   const BarberDashboardScreen({super.key});
@@ -19,6 +20,17 @@ class BarberDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.textWhite,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
