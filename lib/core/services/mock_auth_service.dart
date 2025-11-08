@@ -100,17 +100,17 @@ class MockAuthService {
     // Salvar sessão
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyIsLoggedIn, true);
-    await prefs.setString(_keyUserId, newUser['id']);
-    await prefs.setString(_keyUserName, newUser['name']);
-    await prefs.setString(_keyUserEmail, newUser['email']);
-    await prefs.setString(_keyUserRole, newUser['role']);
+    await prefs.setString(_keyUserId, newUser['id']!);
+    await prefs.setString(_keyUserName, newUser['name']!);
+    await prefs.setString(_keyUserEmail, newUser['email']!);
+    await prefs.setString(_keyUserRole, newUser['role']!);
 
     return User(
-      id: newUser['id'],
-      name: newUser['name'],
-      email: newUser['email'],
-      phone: newUser['phone'],
-      role: _parseRole(newUser['role']),
+      id: newUser['id']!,
+      name: newUser['name']!,
+      email: newUser['email']!,
+      phone: newUser['phone']!,
+      role: _parseRole(newUser['role']!),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
