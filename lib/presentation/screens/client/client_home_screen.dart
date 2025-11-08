@@ -5,6 +5,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/role_selection_screen.dart';
 import '../profile/profile_screen.dart';
+import 'barbershop_details_screen.dart';
 
 class ClientHomeScreen extends StatelessWidget {
   const ClientHomeScreen({super.key});
@@ -300,9 +301,13 @@ class _BarberCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Funcionalidade em desenvolvimento'),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BarbershopDetailsScreen(
+                barbershopId: '1', // Mock ID
+                barbershopName: name,
+              ),
             ),
           );
         },
