@@ -6,6 +6,8 @@ import '../auth/role_selection_screen.dart';
 import '../profile/profile_screen.dart';
 import 'barbershops_management_screen.dart';
 import 'users_management_screen.dart';
+import '../../../screens/admin/reports_screen.dart';
+import '../../../screens/admin/settings_screen.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
@@ -220,10 +222,10 @@ class AdminDashboardScreen extends StatelessWidget {
                           subtitle: 'Estatísticas gerais',
                           color: AppColors.secondary,
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ReportsScreen(),
                               ),
                             );
                           },
@@ -237,10 +239,10 @@ class AdminDashboardScreen extends StatelessWidget {
                           subtitle: 'Configurar plataforma',
                           color: AppColors.textSecondary,
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SettingsScreen(),
                               ),
                             );
                           },

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/services/mock_auth_service.dart';
+import '../../../core/services/google_auth_service.dart';
 import '../../providers/auth_provider.dart';
 import '../barber/barber_dashboard_screen.dart';
 import '../client/client_home_screen.dart';
@@ -29,6 +30,60 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final googleAuthService = GoogleAuthService();
+      final user = await googleAuthService.signInWithGoogle();
+
+      if (!mounted) return;
+
+      if (user != null) {
+        // Atualizar o provider com o usuário do Google
+        final authProvider = context.read<AuthProvider>();
+        authProvider.setUser(user);
+
+        // Navegar para a tela apropriada
+        if (user.role.toString().contains('admin')) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AdminDashboardScreen(),
+            ),
+          );
+        } else if (user.role.toString().contains('barbershop')) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BarberDashboardScreen(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ClientHomeScreen(),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login com Google cancelado'),
+            backgroundColor: AppColors.warning,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao fazer login com Google: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
   }
 
   Future<void> _handleLogin() async {
@@ -218,6 +273,44 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : Text(AppStrings.login),
                                 );
                               },
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Divider com "OU"
+                            Row(
+                              children: [
+                                const Expanded(child: Divider()),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Text(
+                                    'OU',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ),
+                                const Expanded(child: Divider()),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Botão de login com Google
+                            OutlinedButton.icon(
+                              onPressed: _handleGoogleSignIn,
+                              icon: Image.asset(
+                                'assets/icons/google_logo.png',
+                                height: 24,
+                                width: 24,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.g_mobiledata, size: 24);
+                                },
+                              ),
+                              label: const Text('Continuar com Google'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.textPrimary,
+                                side: BorderSide(color: AppColors.textHint),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
                             ),
                             const SizedBox(height: 16),
 

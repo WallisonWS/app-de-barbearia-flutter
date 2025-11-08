@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../screens/admin/barbershop_details_admin_screen.dart';
 
 class BarbershopsManagementScreen extends StatefulWidget {
   const BarbershopsManagementScreen({super.key});
@@ -368,9 +369,12 @@ class _BarbershopsManagementScreenState
                   child: TextButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Funcionalidade em desenvolvimento'),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BarbershopDetailsAdminScreen(
+                            barbershop: barbershop,
+                          ),
                         ),
                       );
                     },
