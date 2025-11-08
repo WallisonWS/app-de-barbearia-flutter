@@ -6,6 +6,7 @@ import '../../../core/services/mock_auth_service.dart';
 import '../../providers/auth_provider.dart';
 import '../barber/barber_dashboard_screen.dart';
 import '../client/client_home_screen.dart';
+import '../admin/admin_dashboard_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,7 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = authProvider.currentUser!;
       
       // Navegar para a tela apropriada
-      if (user.role.toString().contains('barber')) {
+      if (user.role.toString().contains('admin')) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AdminDashboardScreen(),
+          ),
+        );
+      } else if (user.role.toString().contains('barber')) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

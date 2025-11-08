@@ -77,6 +77,30 @@ class RoleSelectionScreen extends StatelessWidget {
                   },
                 ),
                 const Spacer(),
+                
+                // Botão de acesso administrativo
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(role: 'admin'),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.admin_panel_settings,
+                    color: AppColors.textWhite,
+                  ),
+                  label: Text(
+                    'Acesso Administrativo',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textWhite,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
