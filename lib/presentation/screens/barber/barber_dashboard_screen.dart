@@ -5,6 +5,7 @@ import '../../../core/constants/app_strings.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/role_selection_screen.dart';
 import '../profile/profile_screen.dart';
+import 'barbershop_profile_screen.dart';
 
 class BarberDashboardScreen extends StatelessWidget {
   const BarberDashboardScreen({super.key});
@@ -137,16 +138,52 @@ class BarberDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   
-                  Row(
+                   Row(
                     children: [
                       Expanded(
-                        child: _ActionCard(
+                        child: _QuickActionCard(
+                          icon: Icons.store,
+                          title: 'Minha Barbearia',
+                          subtitle: 'Ver perfil',
+                          color: AppColors.secondary,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BarbershopProfileScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _QuickActionCard(
                           icon: Icons.calendar_today,
                           title: 'Agenda',
                           subtitle: 'Ver horários',
                           color: AppColors.primary,
                           onTap: () {
-                            // TODO: Navegar para agenda
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Funcionalidade em desenvolvimento'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _QuickActionCard(
+                          icon: Icons.people,
+                          title: 'Clientes',
+                          subtitle: 'Gerenciar',
+                          color: AppColors.info,
+                          onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Funcionalidade em desenvolvimento'),
@@ -157,13 +194,12 @@ class BarberDashboardScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _ActionCard(
-                          icon: Icons.people_outline,
-                          title: 'Clientes',
-                          subtitle: 'Gerenciar',
-                          color: AppColors.info,
+                        child: _QuickActionCard(
+                          icon: Icons.content_cut,
+                          title: 'Serviços',
+                          subtitle: 'Configurar',
+                          color: AppColors.warning,
                           onTap: () {
-                            // TODO: Navegar para clientes
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Funcionalidade em desenvolvimento'),
@@ -180,10 +216,10 @@ class BarberDashboardScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _ActionCard(
-                          icon: Icons.content_cut,
-                          title: 'Serviços',
-                          subtitle: 'Configurar',
-                          color: AppColors.secondary,
+                          icon: Icons.local_offer,
+                          title: 'Promoções',
+                          subtitle: 'Criar ofertas',
+                          color: AppColors.error,
                           onTap: () {
                             // TODO: Navegar para serviços
                             ScaffoldMessenger.of(context).showSnackBar(
