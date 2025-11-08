@@ -6,6 +6,7 @@ import '../../providers/auth_provider.dart';
 import '../auth/role_selection_screen.dart';
 import '../profile/profile_screen.dart';
 import 'barbershop_profile_screen.dart';
+import 'clients_management_screen.dart';
 
 class BarberDashboardScreen extends StatelessWidget {
   const BarberDashboardScreen({super.key});
@@ -184,9 +185,10 @@ class BarberDashboardScreen extends StatelessWidget {
                           subtitle: 'Gerenciar',
                           color: AppColors.info,
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ClientsManagementScreen(),
                               ),
                             );
                           },
