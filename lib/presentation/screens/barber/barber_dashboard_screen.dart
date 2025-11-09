@@ -7,6 +7,8 @@ import '../auth/role_selection_screen.dart';
 import '../profile/profile_screen.dart';
 import 'barbershop_profile_screen.dart';
 import 'clients_management_screen.dart';
+import 'services_management_screen.dart';
+import 'promotions_management_screen.dart';
 
 class BarberDashboardScreen extends StatelessWidget {
   const BarberDashboardScreen({super.key});
@@ -202,9 +204,10 @@ class BarberDashboardScreen extends StatelessWidget {
                           subtitle: 'Configurar',
                           color: AppColors.warning,
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ServicesManagementScreen(),
                               ),
                             );
                           },
@@ -223,27 +226,10 @@ class BarberDashboardScreen extends StatelessWidget {
                           subtitle: 'Criar ofertas',
                           color: AppColors.error,
                           onTap: () {
-                            // TODO: Navegar para serviços
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Funcionalidade em desenvolvimento'),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _ActionCard(
-                          icon: Icons.local_offer,
-                          title: 'Promoções',
-                          subtitle: 'Criar ofertas',
-                          color: AppColors.error,
-                          onTap: () {
-                            // TODO: Navegar para promoções
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PromotionsManagementScreen(),
                               ),
                             );
                           },

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
+import 'edit_barbershop_profile_screen.dart';
+import 'gallery_management_screen.dart';
+import 'services_management_screen.dart';
 
 class BarbershopProfileScreen extends StatelessWidget {
   const BarbershopProfileScreen({super.key});
@@ -29,9 +32,10 @@ class BarbershopProfileScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Funcionalidade em desenvolvimento'),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EditBarbershopProfileScreen(),
                 ),
               );
             },
@@ -226,9 +230,10 @@ class BarbershopProfileScreen extends StatelessWidget {
                       ),
                       TextButton.icon(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Funcionalidade em desenvolvimento'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GalleryManagementScreen(),
                             ),
                           );
                         },
@@ -279,9 +284,10 @@ class BarbershopProfileScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Funcionalidade em desenvolvimento'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ServicesManagementScreen(),
                             ),
                           );
                         },
