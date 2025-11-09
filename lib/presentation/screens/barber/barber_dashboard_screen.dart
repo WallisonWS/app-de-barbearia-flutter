@@ -9,6 +9,7 @@ import 'barbershop_profile_screen.dart';
 import 'clients_management_screen.dart';
 import 'services_management_screen.dart';
 import 'promotions_management_screen.dart';
+import 'schedule_screen.dart';
 
 class BarberDashboardScreen extends StatelessWidget {
   const BarberDashboardScreen({super.key});
@@ -167,9 +168,10 @@ class BarberDashboardScreen extends StatelessWidget {
                           subtitle: 'Ver horários',
                           color: AppColors.primary,
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Funcionalidade em desenvolvimento'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ScheduleScreen(),
                               ),
                             );
                           },
@@ -216,11 +218,10 @@ class BarberDashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  
                   Row(
                     children: [
                       Expanded(
-                        child: _ActionCard(
+                        child: _QuickActionCard(
                           icon: Icons.local_offer,
                           title: 'Promoções',
                           subtitle: 'Criar ofertas',
@@ -234,6 +235,10 @@ class BarberDashboardScreen extends StatelessWidget {
                             );
                           },
                         ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Container(),
                       ),
                     ],
                   ),
