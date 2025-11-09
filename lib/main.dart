@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_strings.dart';
 import 'presentation/providers/auth_provider.dart';
@@ -10,6 +11,15 @@ import 'presentation/screens/client/client_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inicializar Firebase
+  try {
+    await Firebase.initializeApp();
+    print('✅ Firebase inicializado com sucesso!');
+  } catch (e) {
+    print('❌ Erro ao inicializar Firebase: $e');
+    print('⚠️  Verifique se o arquivo google-services.json está em android/app/');
+  }
   
   runApp(const MyApp());
 }
