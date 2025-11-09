@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/whatsapp_helper.dart';
 import 'edit_barbershop_profile_screen.dart';
+import 'reviews_screen.dart';
 import 'gallery_management_screen.dart';
 import 'services_management_screen.dart';
 
@@ -122,33 +124,53 @@ class BarbershopProfileScreen extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   // Avaliação
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.textWhite.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          color: AppColors.warning,
-                          size: 20,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReviewsScreen(
+                            barbershopId: 'barbershop_1',
+                            barbershopName: barbershop['name'] as String,
+                          ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${barbershop['rating']} (${barbershop['reviews']} avaliações)',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textWhite,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ],
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.textWhite.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: AppColors.warning,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${barbershop['rating']} (${barbershop['reviews']} avaliações)',
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: AppColors.textWhite,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
+                          const SizedBox(width: 4),
+                          Icon(
+                            Icons.chevron_right,
+                            color: AppColors.textWhite.withOpacity(0.8),
+                            size: 18,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -200,6 +222,23 @@ class BarbershopProfileScreen extends StatelessWidget {
                     icon: Icons.phone,
                     label: 'Telefone',
                     value: barbershop['phone'] as String,
+                    trailing: IconButton(
+                      icon: const Icon(Icons.chat, color: AppColors.success),
+                      onPressed: () async {
+                        final success = await WhatsAppHelper.openWhatsApp(
+                          phone: barbershop['phone'] as String,
+                          message: 'Olá! Gostaria de mais informações.',
+                        );
+                        if (!success && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Não foi possível abrir o WhatsApp'),
+                            ),
+                          );
+                        }
+                      },
+                      tooltip: 'Abrir WhatsApp',
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -330,11 +369,13 @@ class _InfoCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
+  final Widget? trailing;
 
   const _InfoCard({
     required this.icon,
     required this.label,
     required this.value,
+    this.trailing,
   });
 
   @override
@@ -381,6 +422,7 @@ class _InfoCard extends StatelessWidget {
               ],
             ),
           ),
+          if (trailing != null) trailing!,
         ],
       ),
     );
