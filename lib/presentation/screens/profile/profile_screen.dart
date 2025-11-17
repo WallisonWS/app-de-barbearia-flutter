@@ -285,8 +285,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  String _getRoleLabel(UserRole role) {
-    switch (role) {
+  String _getRoleLabel(dynamic role) {
+    UserRole userRole;
+    if (role is String) {
+      userRole = UserRole.values.firstWhere((e) => e.toString() == 'UserRole.' + role, orElse: () => UserRole.client);
+    } else {
+      userRole = role as UserRole;
+    }
+    switch (userRole) {
       case UserRole.admin:
         return 'Administrador';
       case UserRole.barber:

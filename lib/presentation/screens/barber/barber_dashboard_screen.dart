@@ -145,7 +145,7 @@ class BarberDashboardScreen extends StatelessWidget {
                    Row(
                     children: [
                       Expanded(
-                        child: _QuickActionCard(
+                        child: _ActionCard(
                           icon: Icons.store,
                           title: 'Minha Barbearia',
                           subtitle: 'Ver perfil',
@@ -162,7 +162,7 @@ class BarberDashboardScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _QuickActionCard(
+                        child: _ActionCard(
                           icon: Icons.calendar_today,
                           title: 'Agenda',
                           subtitle: 'Ver horários',
@@ -183,7 +183,7 @@ class BarberDashboardScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: _QuickActionCard(
+                        child: _ActionCard(
                           icon: Icons.people,
                           title: 'Clientes',
                           subtitle: 'Gerenciar',
@@ -200,7 +200,7 @@ class BarberDashboardScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _QuickActionCard(
+                        child: _ActionCard(
                           icon: Icons.content_cut,
                           title: 'Serviços',
                           subtitle: 'Configurar',
@@ -221,7 +221,7 @@ class BarberDashboardScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: _QuickActionCard(
+                        child: _ActionCard(
                           icon: Icons.local_offer,
                           title: 'Promoções',
                           subtitle: 'Criar ofertas',

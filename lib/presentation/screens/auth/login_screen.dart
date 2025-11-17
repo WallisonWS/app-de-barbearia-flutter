@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/services/mock_auth_service.dart';
+import '../../../domain/entities/user.dart';
 import '../../../core/services/google_auth_service.dart';
 import '../../providers/auth_provider.dart';
 import '../barber/barber_dashboard_screen.dart';

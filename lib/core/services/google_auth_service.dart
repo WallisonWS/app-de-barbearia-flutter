@@ -1,7 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user.dart';
-import '../enums/user_role.dart';
+import '../../domain/entities/user.dart';
+
 
 class GoogleAuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -86,7 +86,7 @@ class GoogleAuthService {
       name: name,
       email: email,
       phone: '',
-      role: _parseRole(roleStr),
+      role: roleStr,
       photoUrl: photoUrl,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -99,7 +99,7 @@ class GoogleAuthService {
     await prefs.setString(_keyUserId, user.id);
     await prefs.setString(_keyUserName, user.name);
     await prefs.setString(_keyUserEmail, user.email);
-    await prefs.setString(_keyUserRole, user.role.toString());
+    await prefs.setString(_keyUserRole, user.role);
     if (user.photoUrl != null) {
       await prefs.setString(_keyUserPhoto, user.photoUrl!);
     }
@@ -112,11 +112,10 @@ class GoogleAuthService {
 
   UserRole _parseRole(String roleStr) {
     switch (roleStr) {
-      case 'UserRole.admin':
+      case 'admin':
         return UserRole.admin;
-      case 'UserRole.barbershop':
-        return UserRole.barbershop;
-      case 'UserRole.client':
+   case 'barber':        return UserRole.barber;
+      case 'client':
         return UserRole.client;
       default:
         return UserRole.client;

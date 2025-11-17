@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import '../../data/models/user_model.dart';
+import '../../domain/entities/user.dart';
 import '../../data/services/firebase_auth_service.dart';
 
 /// Provider de autenticação

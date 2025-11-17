@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       textTheme: GoogleFonts.poppinsTextTheme(),
-      appBarTheme: const AppBarTheme(
+      appBcardTheme: const CardTheme(
         centerTitle: true,
         elevation: 0,
         backgroundColor: AppColors.primary,
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textWhite,
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           textStyle: const TextStyle(
@@ -93,9 +93,9 @@ class MyApp extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
-      cardTheme: CardTheme(
+      cardTheme: const CardTheme(
         elevation: 2,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
       ),
@@ -121,7 +121,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textWhite,
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           textStyle: const TextStyle(
@@ -151,9 +151,9 @@ class MyApp extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
-      cardTheme: CardTheme(
+      cardTheme: const CardTheme(
         elevation: 2,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
       ),
